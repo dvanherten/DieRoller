@@ -11,6 +11,6 @@ namespace DieRoller
             _requiredRollOrHigher = requiredRollOrHigher;
         }
 
-        public decimal Probability => _requiredRollOrHigher / 6m;
+        public decimal Probability => (7 - _requiredRollOrHigher) / 6m;
     }
 }
