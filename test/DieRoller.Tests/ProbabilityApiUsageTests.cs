@@ -86,15 +86,15 @@ namespace DieRoller.Tests
                 .WithReroll(Reroll.Ones)
                 .Build();
 
-            // Calc - If the base probability is already 100, reroll should not increase it further as you should not be rerolling.
-            var expectedProbability = 100m;
+            // Calc - If the base probability is already 100%, reroll should not increase it further as you should not be rerolling.
+            var expectedProbability = 1m;
             CheckProbability(roll, expectedProbability);
         }
 
         private void CheckProbability(Roll roll, decimal expectedProbability)
         {
             var actualProbability = roll.CalculateProbability();
-            _output.WriteLine($"Probability: {actualProbability}");
+            _output.WriteLine($"Probability: {actualProbability:P}");
             actualProbability.Should().Be(expectedProbability);
         }
     }

@@ -1,22 +1,10 @@
 ﻿namespace DieRoller
 {
-    public class Target : IRollTarget
+    public class Target
     {
-        private Target(int value)
+        public static IRollTarget ValueAndAbove(int value)
         {
-            Value = value;
-        }
-
-        public int Value { get; }
-
-        public int GetSuccessCount(int dieSides)
-        {
-            return dieSides + 1 - Value;
-        }
-
-        public static Target ValueAndAbove(int value)
-        {
-            return new Target(value);
+            return new TargetValueAndAbove(value);
         }
     }
 }
