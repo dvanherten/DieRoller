@@ -31,7 +31,7 @@ namespace DieRoller.Tests
                 .WithModifier(0)
                 .Build();
 
-            // Calc - SuccessfulRollCount / Sides
+            // Calc - SuccessfulSideCount / Sides
             var expectedProbability = (7 - valueAndAboveTarget) / 6m;
             CheckProbability(roll, expectedProbability);
         }
@@ -52,10 +52,46 @@ namespace DieRoller.Tests
                 .WithModifier(0)
                 .Build();
 
-            // Calc - (SuccessfulRollCount / Sides) + ((InverseOfSuccessfulRollCount / Sides) * (SuccessfulRollCount / Sides))
+            // Calc - (SuccessfulSideCount / Sides) + ((InverseOfSuccessfulSideCount / Sides) * (SuccessfulSideCount / Sides))
             var decimalSides = (decimal)die.Sides;
-            var successfulRollCount = die.Sides + 1 - valueAndAboveTarget;
-            var expectedProbability = successfulRollCount / decimalSides + (die.Sides - successfulRollCount) / decimalSides * (successfulRollCount / decimalSides);
+            var successfulSideCount = die.Sides + 1 - valueAndAboveTarget;
+            var expectedProbability = successfulSideCount / decimalSides + (die.Sides - successfulSideCount) / decimalSides * (successfulSideCount / decimalSides);
+            CheckProbability(roll, expectedProbability);
+        }
+
+        [Theory]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        [InlineData(6)]
+        public void GivenD6_RerollOnes_NoModifier_ExplicitBuilder(int valueAndAboveTarget)
+        {
+            var die = Die.D6;
+            var roll = RollBuilder.WithDie(die)
+                .Targeting(Target.ValueAndAbove(valueAndAboveTarget))
+                .WithReroll(Reroll.Ones)
+                .WithModifier(0)
+                .Build();
+
+            // Calc - (SuccessfulSideCount / Sides) + ((1 / Sides) * (1 / Sides))
+            var decimalSides = (decimal)die.Sides;
+            var successfulSideCount = die.Sides + 1 - valueAndAboveTarget;
+            var expectedProbability = successfulSideCount / decimalSides + 1 / decimalSides * (1 / decimalSides);
+            CheckProbability(roll, expectedProbability);
+        }
+
+        [Fact]
+        public void GivenD6_RerollOnes_NoModifier_ExplicitBuilder_WhenOneIsSuccess()
+        {
+            var die = Die.D6;
+            var roll = RollBuilder.WithDie(die)
+                .Targeting(Target.ValueAndAbove(1))
+                .WithReroll(Reroll.Ones)
+                .Build();
+
+            // Calc - If the base probability is already 100, reroll should not increase it further as you should not be rerolling.
+            var expectedProbability = 100m;
             CheckProbability(roll, expectedProbability);
         }
 
@@ -73,7 +109,7 @@ namespace DieRoller.Tests
                 .Targeting(Target.ValueAndAbove(valueAndAboveTarget))
                 .Build();
 
-            // Calc - SuccessfulRollCount / Sides
+            // Calc - SuccessfulSideCount / Sides
             var expectedProbability = (7 - valueAndAboveTarget) / 6m;
             CheckProbability(roll, expectedProbability);
         }
