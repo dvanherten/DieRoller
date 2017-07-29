@@ -57,7 +57,7 @@ namespace DieRoller.Tests
 
         private void CheckProbability(Roll roll, decimal expectedProbability)
         {
-            var actualProbability = roll.Probability;
+            var actualProbability = roll.CalculateProbability();
             _output.WriteLine($"Probability: {actualProbability}");
             actualProbability.Should().Be(expectedProbability);
         }

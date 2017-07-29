@@ -17,16 +17,13 @@ namespace DieRoller
             _modifier = modifier ?? throw new ArgumentNullException(nameof(modifier));
         }
 
-        public decimal Probability
+        public decimal CalculateProbability()
         {
-            get
-            {
-                if (_die.Sides < 1)
-                    return 0;
-                var possibleSuccesses = _target.GetSuccessCount(_die.Sides);
-                var baseProbability = possibleSuccesses / (decimal)_die.Sides;
-                return baseProbability;
-            }
+            if (_die.Sides < 1)
+                return 0;
+            var possibleSuccesses = _target.GetSuccessCount(_die.Sides);
+            var baseProbability = possibleSuccesses / (decimal)_die.Sides;
+            return baseProbability;
         }
     }
 
