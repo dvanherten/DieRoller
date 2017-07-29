@@ -2,6 +2,6 @@ namespace DieRoller
 {
     public interface IRollBuilderWithTarget : IBuildableRoll
     {
-        IRollBuilderWithReroll WithReroll(RerollOptions rerollOptions);
+        IRollBuilderWithReroll WithReroll(IRerollBehaviour rerollOptions);
     }
 }

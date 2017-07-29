@@ -5,12 +5,12 @@
     /// </summary>
     public class RollBuilder : IRollBuilderWithDie, IRollBuilderWithTarget, IRollBuilderWithReroll, IBuildableRoll
     {
-        private readonly IDie _die;
-        private IRerollOptions _rerollOptions = RerollOptions.None;
+        private readonly Die _die;
+        private IRerollBehaviour _rerollOptions = Reroll.None;
         private IRollModifier _rollModifier = new NoModifier();
         private IRollTarget _target;
 
-        private RollBuilder(IDie die)
+        private RollBuilder(Die die)
         {
             _die = die;
         }
@@ -27,7 +27,7 @@
             return this;
         }
 
-        public IRollBuilderWithReroll WithReroll(RerollOptions rerollOptions)
+        public IRollBuilderWithReroll WithReroll(IRerollBehaviour rerollOptions)
         {
             _rerollOptions = rerollOptions;
             return this;
@@ -38,9 +38,9 @@
             return new Roll(_die, _target, _rerollOptions, _rollModifier);
         }
 
-        public static IRollBuilderWithDie WithDie(DSix d6Die)
+        public static IRollBuilderWithDie WithDie(Die die)
         {
-            return new RollBuilder(d6Die);
+            return new RollBuilder(die);
         }
     }
 }
