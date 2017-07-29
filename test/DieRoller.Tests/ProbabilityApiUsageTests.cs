@@ -23,12 +23,10 @@ namespace DieRoller.Tests
         [InlineData(4)]
         [InlineData(5)]
         [InlineData(6)]
-        public void GivenD6_NoReroll_NoModifier_ExplicitBuilder(int valueAndAboveTarget)
+        public void GivenD6_NoReroll_NoModifier(int valueAndAboveTarget)
         {
             var roll = RollBuilder.WithDie(Die.D6)
                 .Targeting(Target.ValueAndAbove(valueAndAboveTarget))
-                .WithReroll(Reroll.None)
-                .WithModifier(0)
                 .Build();
 
             // Calc - SuccessfulSideCount / Sides
@@ -43,13 +41,12 @@ namespace DieRoller.Tests
         [InlineData(4)]
         [InlineData(5)]
         [InlineData(6)]
-        public void GivenD6_RerollFailures_NoModifier_ExplicitBuilder(int valueAndAboveTarget)
+        public void GivenD6_RerollFailures(int valueAndAboveTarget)
         {
             var die = Die.D6;
             var roll = RollBuilder.WithDie(die)
                 .Targeting(Target.ValueAndAbove(valueAndAboveTarget))
                 .WithReroll(Reroll.Failures)
-                .WithModifier(0)
                 .Build();
 
             // Calc - (SuccessfulSideCount / Sides) + ((InverseOfSuccessfulSideCount / Sides) * (SuccessfulSideCount / Sides))
@@ -65,13 +62,12 @@ namespace DieRoller.Tests
         [InlineData(4)]
         [InlineData(5)]
         [InlineData(6)]
-        public void GivenD6_RerollOnes_NoModifier_ExplicitBuilder(int valueAndAboveTarget)
+        public void GivenD6_RerollOnes(int valueAndAboveTarget)
         {
             var die = Die.D6;
             var roll = RollBuilder.WithDie(die)
                 .Targeting(Target.ValueAndAbove(valueAndAboveTarget))
                 .WithReroll(Reroll.Ones)
-                .WithModifier(0)
                 .Build();
 
             // Calc - (SuccessfulSideCount / Sides) + ((1 / Sides) * (1 / Sides))
@@ -82,7 +78,7 @@ namespace DieRoller.Tests
         }
 
         [Fact]
-        public void GivenD6_RerollOnes_NoModifier_ExplicitBuilder_WhenOneIsSuccess()
+        public void GivenD6_RerollOnes_WhenOneIsSuccess()
         {
             var die = Die.D6;
             var roll = RollBuilder.WithDie(die)
@@ -92,25 +88,6 @@ namespace DieRoller.Tests
 
             // Calc - If the base probability is already 100, reroll should not increase it further as you should not be rerolling.
             var expectedProbability = 100m;
-            CheckProbability(roll, expectedProbability);
-        }
-
-        [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData(3)]
-        [InlineData(4)]
-        [InlineData(5)]
-        [InlineData(6)]
-        public void GivenD6_NoReroll_NoModifier_AsDefaultsInBuilder(int valueAndAboveTarget)
-        {
-
-            var roll = RollBuilder.WithDie(Die.D6)
-                .Targeting(Target.ValueAndAbove(valueAndAboveTarget))
-                .Build();
-
-            // Calc - SuccessfulSideCount / Sides
-            var expectedProbability = (7 - valueAndAboveTarget) / 6m;
             CheckProbability(roll, expectedProbability);
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace DieRoller
 {
-    internal class NoModifier : IRollModifier
+    public class NoModifier : IRollModifier
     {
     }
 }

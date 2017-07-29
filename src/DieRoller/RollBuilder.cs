@@ -3,39 +3,40 @@
     /// <summary>
     /// Fluent builder to aid in the creation of a valid <see cref="Roll"/>.
     /// </summary>
-    public class RollBuilder : IRollBuilderWithDie, IRollBuilderWithTarget, IRollBuilderWithReroll, IBuildableRoll
+    public class RollBuilder : IRollBuilderWithDie, IRollBuilderWithTarget, IRollBuilderWithReroll
     {
-        private readonly Die _die;
-        private IRerollBehaviour _rerollOptions = Reroll.None;
-        private IRollModifier _rollModifier = new NoModifier();
-        private IRollTarget _target;
+        public Die Die { get; }
+        public IRollTarget Target { get; private set; }
+        public IRerollBehaviour RerollBehaviour { get; private set; } = Reroll.None;
+        public IRollModifier RollModifier { get; private set; } = new NoModifier();
+        
 
         private RollBuilder(Die die)
         {
-            _die = die;
+            Die = die;
         }
 
         public IRollBuilderWithTarget Targeting(IRollTarget target)
         {
-            _target = target;
+            Target = target;
             return this;
         }
 
         public IBuildableRoll WithModifier(int modifier)
         {
-            _rollModifier = new FlatRollModifier(modifier);
+            RollModifier = new FlatRollModifier(modifier);
             return this;
         }
 
         public IRollBuilderWithReroll WithReroll(IRerollBehaviour rerollOptions)
         {
-            _rerollOptions = rerollOptions;
+            RerollBehaviour = rerollOptions;
             return this;
         }
 
         public Roll Build()
         {
-            return new Roll(_die, _target, _rerollOptions, _rollModifier);
+            return new Roll(Die, Target, RerollBehaviour, RollModifier);
         }
 
         public static IRollBuilderWithDie WithDie(Die die)
