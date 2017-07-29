@@ -1,6 +1,6 @@
 ﻿namespace DieRoller
 {
-    public class D6Die : IDie
+    public class DSix : IDie
     {
         public int Sides => 6;
     }
