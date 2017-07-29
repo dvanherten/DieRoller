@@ -70,10 +70,10 @@ namespace DieRoller.Tests
                 .WithReroll(Reroll.Ones)
                 .Build();
 
-            // Calc - (SuccessfulSideCount / Sides) + ((1 / Sides) * (1 / Sides))
+            // Calc - (SuccessfulSideCount / Sides) + ((1 / Sides) * (SuccessfulSideCount / Sides))
             var decimalSides = (decimal)die.Sides;
             var successfulSideCount = die.Sides + 1 - valueAndAboveTarget;
-            var expectedProbability = successfulSideCount / decimalSides + 1 / decimalSides * (1 / decimalSides);
+            var expectedProbability = successfulSideCount / decimalSides + 1 / decimalSides * (successfulSideCount / decimalSides);
             CheckProbability(roll, expectedProbability);
         }
 
