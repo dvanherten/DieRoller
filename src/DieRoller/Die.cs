@@ -27,6 +27,15 @@ namespace DieRoller
 
             return (decimal)successfulSideCount / Sides;
         }
+        
+        public int Simulate(INumberGenerator numberGenerator)
+        {
+            var number = numberGenerator.GetNumber();
+            number = Math.Abs(number);
+
+            var remainder = number % Sides;
+            return remainder == 0 ? Sides : remainder;
+        }
 
         public static Die D6 => new Die(6);
         public static Die D3 => new Die(3);

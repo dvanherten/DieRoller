@@ -8,9 +8,11 @@ namespace DieRoller
         private readonly IRollTarget _target;
         private readonly IRerollBehaviour _rerollOptions;
         private readonly IRollModifier _modifier;
+        private readonly INumberGenerator _numberGenerator;
 
-        internal Roll(Die die, IRollTarget target, IRerollBehaviour rerollOptions, IRollModifier modifier)
+        internal Roll(Die die, IRollTarget target, IRerollBehaviour rerollOptions, IRollModifier modifier, INumberGenerator numberGenerator)
         {
+            _numberGenerator = numberGenerator;
             _die = die ?? throw new ArgumentNullException(nameof(die));
             _target = target ?? throw new ArgumentNullException(nameof(target));
             _rerollOptions = rerollOptions ?? throw new ArgumentNullException(nameof(rerollOptions));
@@ -26,9 +28,30 @@ namespace DieRoller
             var rerollProbability = _rerollOptions.CalculateProbability(_die, _target);
             return baseProbability + rerollProbability;
         }
+
+        public int Simulate()
+        {
+            return _die.Simulate(_numberGenerator);
+        }
     }
 
-    public class RollResult
+    /// <summary>
+    /// Implementation using random to be used at runtime.
+    /// </summary>
+    public class RandomNumberGenerator : INumberGenerator
     {
+        public static Random Random = new Random();
+        public int GetNumber()
+        {
+            return Random.Next();
+        }
+    }
+
+    /// <summary>
+    /// Interface to abstract Random for testing purposes.
+    /// </summary>
+    public interface INumberGenerator
+    {
+        int GetNumber();
     }
 }
