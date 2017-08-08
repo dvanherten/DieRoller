@@ -11,8 +11,8 @@ namespace DieRoller.Tests
         {
             var rollBuilder = RollBuilder.WithDie(Die.D6)
                 .Targeting(Target.ValueAndAbove(4)) as RollBuilder;
-
-            rollBuilder?.RollModifier.GetType().Should().Be<NoModifier>();
+            
+            rollBuilder.RollModifier.GetType().Should().Be<NoModifier>();
         }
 
         [Fact]
@@ -20,8 +20,8 @@ namespace DieRoller.Tests
         {
             var rollBuilder = RollBuilder.WithDie(Die.D6)
                 .Targeting(Target.ValueAndAbove(4)) as RollBuilder;
-
-            rollBuilder?.RerollBehaviour.GetType().Should().Be<RerollNone>();
+            
+            rollBuilder.RerollBehaviour.GetType().Should().Be<RerollNone>();
         }
     }
 }
