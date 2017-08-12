@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace DieRoller
 {
@@ -29,29 +30,19 @@ namespace DieRoller
             return baseProbability + rerollProbability;
         }
 
-        public int Simulate()
+        public RollResult Simulate()
         {
-            return _die.Simulate(_numberGenerator);
-        }
-    }
+            var initial = _die.Simulate(_numberGenerator);
+            SingleRollResult rerollResult = null;
+            var final = initial;
 
-    /// <summary>
-    /// Implementation using random to be used at runtime.
-    /// </summary>
-    public class RandomNumberGenerator : INumberGenerator
-    {
-        public static Random Random = new Random();
-        public int GetNumber()
-        {
-            return Random.Next();
-        }
-    }
+            if (_rerollOptions.RequiresReroll(initial, _target))
+            {
+                rerollResult = _die.Simulate(_numberGenerator);
+                final = rerollResult;
+            }
 
-    /// <summary>
-    /// Interface to abstract Random for testing purposes.
-    /// </summary>
-    public interface INumberGenerator
-    {
-        int GetNumber();
+            return new RollResult(_target, initial, rerollResult, final.SideRolled);
+        }
     }
 }

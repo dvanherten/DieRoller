@@ -28,13 +28,13 @@ namespace DieRoller
             return (decimal)successfulSideCount / Sides;
         }
         
-        public int Simulate(INumberGenerator numberGenerator)
+        public SingleRollResult Simulate(INumberGenerator numberGenerator)
         {
             var number = numberGenerator.GetNumber();
             number = Math.Abs(number);
 
             var remainder = number % Sides;
-            return remainder == 0 ? Sides : remainder;
+            return new SingleRollResult(this, remainder == 0 ? Sides : remainder);
         }
 
         public static Die D6 => new Die(6);

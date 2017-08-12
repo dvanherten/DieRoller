@@ -23,5 +23,10 @@ namespace DieRoller
                 if (i >= Value)
                     yield return i;
         }
+
+        public override string ToString()
+        {
+            return $"{Value}+";
+        }
     }
 }

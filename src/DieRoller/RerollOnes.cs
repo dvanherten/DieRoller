@@ -12,5 +12,10 @@ namespace DieRoller
 
             return die.CalculateProbability(1) * die.CalculateProbability(target.GetSuccessCount(die.Sides));
         }
+
+        public bool RequiresReroll(SingleRollResult initial, IRollTarget target)
+        {
+            return initial.SideRolled == 1;
+        }
     }
 }

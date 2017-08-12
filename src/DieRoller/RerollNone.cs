@@ -11,5 +11,10 @@
         {
             return 0;
         }
+
+        public bool RequiresReroll(SingleRollResult initial, IRollTarget target)
+        {
+            return false;
+        }
     }
 }

@@ -38,12 +38,51 @@ namespace DieRoller.Tests
         {
             var roll = RollBuilder.WithDie(Die.D6)
                 .WithNumbers(new ForcedNumberGenerator(numberToGenerate))
-                .Targeting(Target.ValueAndAbove(numberToGenerate))
+                .Targeting(Target.ValueAndAbove(3))
                 .Build();
 
             var result = roll.Simulate();
 
-            result.Should().Be(expected);
+            _output.WriteLine(result.ToString());
+            result.Final.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(3, 1, 5, true, 5, true)]
+        [InlineData(6, 1, 5, true, 5, false)]
+        [InlineData(3, 5, 4, false, 5, true)]
+        [InlineData(3, 2, 5, false, 2, false)]
+        public void GivenD6_RerollOnes_NoModifier(int targeting, int initialRoll, int reroll, bool expectedReroll, int expectedFinal, bool expectedSuccess)
+        {
+            var roll = RollBuilder.WithDie(Die.D6)
+                .WithNumbers(new ForcedNumberGenerator(initialRoll, reroll))
+                .Targeting(Target.ValueAndAbove(targeting))
+                .WithReroll(Reroll.Ones)
+                .Build();
+
+            var result = roll.Simulate();
+
+            _output.WriteLine(result.ToString());
+            ValidateRollResult(result, initialRoll, reroll, expectedReroll, expectedFinal, expectedSuccess);
+        }
+
+        [Theory]
+        [InlineData(3, 1, 5, true, 5, true)]
+        [InlineData(6, 1, 5, true, 5, false)]
+        [InlineData(3, 5, 4, false, 5, true)]
+        [InlineData(3, 2, 5, true, 5, true)]
+        public void GivenD6_RerollFailures_NoModifier(int targeting, int initialRoll, int reroll, bool expectedReroll, int expectedFinal, bool expectedSuccess)
+        {
+            var roll = RollBuilder.WithDie(Die.D6)
+                .WithNumbers(new ForcedNumberGenerator(initialRoll, reroll))
+                .Targeting(Target.ValueAndAbove(targeting))
+                .WithReroll(Reroll.Failures)
+                .Build();
+
+            var result = roll.Simulate();
+
+            _output.WriteLine(result.ToString());
+            ValidateRollResult(result, initialRoll, reroll, expectedReroll, expectedFinal, expectedSuccess);
         }
 
         [Theory]
@@ -64,27 +103,64 @@ namespace DieRoller.Tests
         {
             var roll = RollBuilder.WithDie(Die.D3)
                 .WithNumbers(new ForcedNumberGenerator(numberToGenerate))
-                .Targeting(Target.ValueAndAbove(numberToGenerate))
+                .Targeting(Target.ValueAndAbove(3))
                 .Build();
 
             var result = roll.Simulate();
 
-            result.Should().Be(expected);
-        }
-    }
-
-    public class ForcedNumberGenerator : INumberGenerator
-    {
-        public int NumberToReturn { get; }
-
-        public ForcedNumberGenerator(int numberToReturn)
-        {
-            NumberToReturn = numberToReturn;
+            _output.WriteLine(result.ToString());
+            result.Final.Should().Be(expected);
         }
 
-        public int GetNumber()
+        [Theory]
+        [InlineData(3, 1, 3, true, 3, true)]
+        [InlineData(2, 1, 1, true, 1, false)]
+        [InlineData(3, 2, 3, false, 2, false)]
+        [InlineData(2, 1, 1, true, 1, false)]
+        public void GivenD3_RerollOnes_NoModifier(int targeting, int initialRoll, int reroll, bool expectedReroll, int expectedFinal, bool expectedSuccess)
         {
-            return NumberToReturn;
+            var roll = RollBuilder.WithDie(Die.D3)
+                .WithNumbers(new ForcedNumberGenerator(initialRoll, reroll))
+                .Targeting(Target.ValueAndAbove(targeting))
+                .WithReroll(Reroll.Ones)
+                .Build();
+
+            var result = roll.Simulate();
+
+            _output.WriteLine(result.ToString());
+            ValidateRollResult(result, initialRoll, reroll, expectedReroll, expectedFinal, expectedSuccess);
+        }
+
+        [Theory]
+        [InlineData(3, 1, 3, true, 3, true)]
+        [InlineData(2, 1, 1, true, 1, false)]
+        [InlineData(3, 2, 3, true, 3, true)]
+        [InlineData(3, 2, 1, true, 1, false)]
+        [InlineData(2, 1, 1, true, 1, false)]
+        [InlineData(3, 3, 2, false, 3, true)]
+        public void GivenD3_RerollFailures_NoModifier(int targeting, int initialRoll, int reroll, bool expectedReroll, int expectedFinal, bool expectedSuccess)
+        {
+            var roll = RollBuilder.WithDie(Die.D3)
+                .WithNumbers(new ForcedNumberGenerator(initialRoll, reroll))
+                .Targeting(Target.ValueAndAbove(targeting))
+                .WithReroll(Reroll.Failures)
+                .Build();
+
+            var result = roll.Simulate();
+
+            _output.WriteLine(result.ToString());
+            ValidateRollResult(result, initialRoll, reroll, expectedReroll, expectedFinal, expectedSuccess);
+        }
+
+        private static void ValidateRollResult(RollResult result, int initialRoll, int reroll, bool expectedReroll, int expectedFinal, bool expectedSuccess)
+        {
+            result.InitialRollResult.SideRolled.Should().Be(initialRoll);
+            if (expectedReroll)
+                result.RerollResult.SideRolled.Should().Be(reroll);
+            else
+                result.RerollResult.Should().BeNull();
+            result.Final.Should().Be(expectedFinal);
+            result.IsSuccessful.Should().Be(expectedSuccess);
         }
     }
 }
