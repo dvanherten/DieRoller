@@ -22,8 +22,6 @@ namespace DieRoller
 
         public decimal CalculateProbability()
         {
-            if (_die.Sides < 1)
-                return 0;
             var successfulSideCount = _target.GetSuccessCount(_die.Sides);
             var baseProbability = _die.CalculateProbability(successfulSideCount);
             var rerollProbability = _rerollOptions.CalculateProbability(_die, _target);
