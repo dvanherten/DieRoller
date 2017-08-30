@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace DieRoller
 {
@@ -6,11 +7,12 @@ namespace DieRoller
     {
         public decimal CalculateProbability(Die die, IRollTarget target)
         {
-            int[] successfulSides = target.GetSuccessfulSides(die.Sides).ToArray();
-            if (successfulSides.Contains(1))
-                return 0; // Can't have a re-roll if 1 is a success.
+            return die.CalculateProbability(1) * die.CalculateProbability(target.GetModifiedSuccessfulSides(die.TotalSides).Count());
+        }
 
-            return die.CalculateProbability(1) * die.CalculateProbability(target.GetSuccessCount(die.Sides));
+        public IEnumerable<int> GetRerollSides(Die die, IRollTarget target)
+        {
+            return new[] {1};
         }
 
         public bool RequiresReroll(SingleRollResult initial, IRollTarget target)

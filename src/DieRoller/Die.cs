@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DieRoller
 {
@@ -10,10 +11,16 @@ namespace DieRoller
         public Die(int sides)
         {
             if (sides <= 1) throw new ArgumentOutOfRangeException(nameof(sides), $"A {nameof(Die)} must have at least two sides. Was provided {sides}.");
-            Sides = sides;
+            TotalSides = sides;
         }
 
-        public int Sides { get; }
+        public int TotalSides { get; }
+
+        public IEnumerable<int> GetSides()
+        {
+            for (int i = 1; i <= TotalSides; i++)
+                yield return i;
+        }
 
         /// <summary>
         /// Calculate success probability based on the number of successful sides provided.
@@ -22,10 +29,10 @@ namespace DieRoller
         /// <returns>Probability that the roll was successful.</returns>
         internal decimal CalculateProbability(int successfulSideCount)
         {
-            if (successfulSideCount < 0) throw new ArgumentOutOfRangeException(nameof(successfulSideCount));
-            if (successfulSideCount > Sides) throw new ArgumentOutOfRangeException(nameof(successfulSideCount));
+            if (successfulSideCount < 0) throw new ArgumentOutOfRangeException(nameof(successfulSideCount), "cannot be less than zero.");
+            if (successfulSideCount > TotalSides) throw new ArgumentOutOfRangeException(nameof(successfulSideCount), "cannot exceed the sides of the die.");
 
-            return (decimal)successfulSideCount / Sides;
+            return (decimal)successfulSideCount / TotalSides;
         }
         
         public SingleRollResult Simulate(INumberGenerator numberGenerator)
@@ -33,8 +40,8 @@ namespace DieRoller
             var number = numberGenerator.GetNumber();
             number = Math.Abs(number);
 
-            var remainder = number % Sides;
-            return new SingleRollResult(this, remainder == 0 ? Sides : remainder);
+            var remainder = number % TotalSides;
+            return new SingleRollResult(this, remainder == 0 ? TotalSides : remainder);
         }
 
         public static Die D6 => new Die(6);

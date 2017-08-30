@@ -2,9 +2,9 @@
 {
     public class Target
     {
-        public static IRollTarget ValueAndAbove(int value)
+        public static int ValueAndAbove(int value)
         {
-            return new TargetValueAndAbove(value);
+            return value;
         }
     }
 }

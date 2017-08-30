@@ -2,7 +2,7 @@
 {
     public interface IRollBuilderWithDie
     {
-        IRollBuilderWithTarget Targeting(IRollTarget target);
+        IRollBuilderWithTarget Targeting(int target);
         IRollBuilderWithDie WithNumbers(INumberGenerator numberGenerator);
     }
 }

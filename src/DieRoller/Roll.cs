@@ -8,22 +8,22 @@ namespace DieRoller
         private readonly Die _die;
         private readonly IRollTarget _target;
         private readonly IRerollBehaviour _rerollOptions;
-        private readonly IRollModifier _modifier;
         private readonly INumberGenerator _numberGenerator;
 
-        internal Roll(Die die, IRollTarget target, IRerollBehaviour rerollOptions, IRollModifier modifier, INumberGenerator numberGenerator)
+        internal Roll(Die die, IRollTarget target, IRerollBehaviour rerollOptions, INumberGenerator numberGenerator)
         {
             _numberGenerator = numberGenerator;
             _die = die ?? throw new ArgumentNullException(nameof(die));
             _target = target ?? throw new ArgumentNullException(nameof(target));
             _rerollOptions = rerollOptions ?? throw new ArgumentNullException(nameof(rerollOptions));
-            _modifier = modifier ?? throw new ArgumentNullException(nameof(modifier));
         }
 
         public decimal CalculateProbability()
         {
-            var successfulSideCount = _target.GetSuccessCount(_die.Sides);
-            var baseProbability = _die.CalculateProbability(successfulSideCount);
+            var successfulSides = _target.GetModifiedSuccessfulSides(_die.TotalSides).ToArray();
+            var rerollSides = _rerollOptions.GetRerollSides(_die, _target).ToArray();
+            var initialSuccessfulSides = successfulSides.Except(rerollSides);
+            var baseProbability = _die.CalculateProbability(initialSuccessfulSides.Count());
             var rerollProbability = _rerollOptions.CalculateProbability(_die, _target);
             return baseProbability + rerollProbability;
         }

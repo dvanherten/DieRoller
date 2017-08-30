@@ -17,13 +17,13 @@ namespace DieRoller
             Target = target;
             RerollResult = rerollResult;
             Final = final;
-            IsSuccessful = target.GetSuccessfulSides(initialRollResult.Die.Sides).Contains(final);
+            IsSuccessful = target.GetSuccessfulSides(initialRollResult.Die.TotalSides).Contains(final);
         }
 
         public override string ToString()
         {
             var rerollText = $"{RerollResult?.SideRolled.ToString() ?? "No Reroll"}";
-            return $@"Rolling D{InitialRollResult.Die.Sides} - Targeting: {Target}
+            return $@"Rolling D{InitialRollResult.Die.TotalSides} - Targeting: {Target}
 ~~~~~~~~~~~~~~~~~~
 Initial: {InitialRollResult.SideRolled}
 Reroll: {rerollText}

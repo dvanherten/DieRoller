@@ -9,6 +9,11 @@
             Modifier = modifier;
         }
 
+        public int GetModifiedTarget(int target)
+        {
+            return target + Modifier * -1;
+        }
+
         public override bool Equals(object obj)
         {
             var second = obj as FlatRollModifier;

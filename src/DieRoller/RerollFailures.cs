@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace DieRoller
 {
@@ -8,13 +9,18 @@ namespace DieRoller
 
         public decimal CalculateProbability(Die die, IRollTarget target)
         {
-            var failures = die.Sides - target.GetSuccessCount(die.Sides);
-            return die.CalculateProbability(failures) * die.CalculateProbability(target.GetSuccessCount(die.Sides));
+            var failures = die.TotalSides - target.GetSuccessfulSides(die.TotalSides).Count();
+            return die.CalculateProbability(failures) * die.CalculateProbability(target.GetModifiedSuccessfulSides(die.TotalSides).Count());
+        }
+
+        public IEnumerable<int> GetRerollSides(Die die, IRollTarget target)
+        {
+            return die.GetSides().Except(target.GetSuccessfulSides(die.TotalSides));
         }
 
         public bool RequiresReroll(SingleRollResult initial, IRollTarget target)
         {
-            return !target.GetSuccessfulSides(initial.Die.Sides).Contains(initial.SideRolled);
+            return !target.GetSuccessfulSides(initial.Die.TotalSides).Contains(initial.SideRolled);
         }
     }
 }

@@ -5,28 +5,34 @@ namespace DieRoller
 {
     public class TargetValueAndAbove : IRollTarget
     {
-        internal TargetValueAndAbove(int value)
+        private readonly IRollModifier _modifier;
+
+        internal TargetValueAndAbove(int value, IRollModifier modifier)
         {
-            Value = value;
+            _modifier = modifier;
+            Target = value;
         }
 
-        public int Value { get; }
-
-        public int GetSuccessCount(int dieSides)
-        {
-            return GetSuccessfulSides(dieSides).Count();
-        }
+        public int Target { get; }
+        public int ModifiedTarget => _modifier.GetModifiedTarget(Target);
 
         public IEnumerable<int> GetSuccessfulSides(int dieSides)
         {
             for (int i = 1; i <= dieSides; i++)
-                if (i >= Value)
+                if (i >= Target)
+                    yield return i;
+        }
+
+        public IEnumerable<int> GetModifiedSuccessfulSides(int dieSides)
+        {
+            for (int i = 1; i <= dieSides; i++)
+                if (i >= ModifiedTarget)
                     yield return i;
         }
 
         public override string ToString()
         {
-            return $"{Value}+";
+            return $"{Target}+";
         }
     }
 }

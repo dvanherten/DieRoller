@@ -7,7 +7,7 @@
     {
         public Die Die { get; }
         public INumberGenerator NumberGenerator { get; private set; } = new RandomNumberGenerator();
-        public IRollTarget Target { get; private set; }
+        public int Target { get; private set; }
         public IRerollBehaviour RerollBehaviour { get; private set; } = Reroll.None;
         public IRollModifier RollModifier { get; private set; } = new NoModifier();
         
@@ -17,7 +17,7 @@
             Die = die;
         }
 
-        public IRollBuilderWithTarget Targeting(IRollTarget target)
+        public IRollBuilderWithTarget Targeting(int target)
         {
             Target = target;
             return this;
@@ -37,7 +37,7 @@
 
         public Roll Build()
         {
-            return new Roll(Die, Target, RerollBehaviour, RollModifier, NumberGenerator);
+            return new Roll(Die, new TargetValueAndAbove(Target, RollModifier), RerollBehaviour, NumberGenerator);
         }
 
         public static IRollBuilderWithDie WithDie(Die die)

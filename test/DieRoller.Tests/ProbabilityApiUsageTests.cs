@@ -51,9 +51,9 @@ namespace DieRoller.Tests
                 .Build();
 
             // Calc - (SuccessfulSideCount / Sides) + ((InverseOfSuccessfulSideCount / Sides) * (SuccessfulSideCount / Sides))
-            var decimalSides = (decimal)die.Sides;
-            var successfulSideCount = die.Sides + 1 - valueAndAboveTarget;
-            var expectedProbability = successfulSideCount / decimalSides + (die.Sides - successfulSideCount) / decimalSides * (successfulSideCount / decimalSides);
+            var decimalSides = (decimal)die.TotalSides;
+            var successfulSideCount = die.TotalSides + 1 - valueAndAboveTarget;
+            var expectedProbability = successfulSideCount / decimalSides + (die.TotalSides - successfulSideCount) / decimalSides * (successfulSideCount / decimalSides);
             CheckProbability(roll, expectedProbability);
         }
 
@@ -72,8 +72,8 @@ namespace DieRoller.Tests
                 .Build();
 
             // Calc - (SuccessfulSideCount / Sides) + ((1 / Sides) * (SuccessfulSideCount / Sides))
-            var decimalSides = (decimal)die.Sides;
-            var successfulSideCount = die.Sides + 1 - valueAndAboveTarget;
+            var decimalSides = (decimal)die.TotalSides;
+            var successfulSideCount = die.TotalSides + 1 - valueAndAboveTarget;
             var expectedProbability = successfulSideCount / decimalSides + 1 / decimalSides * (successfulSideCount / decimalSides);
             CheckProbability(roll, expectedProbability);
         }
@@ -109,8 +109,8 @@ namespace DieRoller.Tests
                 .Build();
 
             // Calc - (SuccessfulSideCount + ModifierAmount) / Sides
-            var decimalSides = (decimal)die.Sides;
-            var successfulSideCount = die.Sides + 1 - valueAndAboveTarget;
+            var decimalSides = (decimal)die.TotalSides;
+            var successfulSideCount = die.TotalSides + 1 - valueAndAboveTarget;
             var expectedProbability = (successfulSideCount + modifier) / decimalSides;
             CheckProbability(roll, expectedProbability);
         }
@@ -132,8 +132,8 @@ namespace DieRoller.Tests
                 .Build();
 
             // Calc - See CalcRerollWithModifier
-            var successfulSideCount = die.Sides + 1 - valueAndAboveTarget;
-            var expectedProbability = CalcProbabilityForRerollWithModifier(die.Sides, successfulSideCount, 1, modifier);
+            var successfulSideCount = die.TotalSides + 1 - valueAndAboveTarget;
+            var expectedProbability = CalcProbabilityForRerollWithModifier(die.TotalSides, successfulSideCount, 1, modifier);
             CheckProbability(roll, expectedProbability);
         }
 
@@ -154,10 +154,10 @@ namespace DieRoller.Tests
                 .Build();
 
             // Calc - See CalcRerollWithModifier
-            var successfulSideCount = die.Sides + 1 - valueAndAboveTarget;
-            var rerollSides = die.Sides - successfulSideCount;
-            var expectedProbability = CalcProbabilityForRerollWithModifier(die.Sides, successfulSideCount, rerollSides, modifier);
-            CheckProbability(roll, expectedProbability); 
+            var successfulSideCount = die.TotalSides + 1 - valueAndAboveTarget;
+            var rerollSides = die.TotalSides - successfulSideCount;
+            var expectedProbability = CalcProbabilityForRerollWithModifier(die.TotalSides, successfulSideCount, rerollSides, modifier);
+            CheckProbability(roll, expectedProbability);
         }
 
         [Theory]
@@ -177,8 +177,8 @@ namespace DieRoller.Tests
                 .Build();
 
             // Calc - ((SuccessfulSideCount + ModifierAmount) / Sides)
-            var decimalSides = (decimal)die.Sides;
-            var successfulSideCount = die.Sides + 1 - valueAndAboveTarget;
+            var decimalSides = (decimal)die.TotalSides;
+            var successfulSideCount = die.TotalSides + 1 - valueAndAboveTarget;
             var expectedProbability = (successfulSideCount + modifier) / decimalSides;
             CheckProbability(roll, expectedProbability);
         }
@@ -200,8 +200,8 @@ namespace DieRoller.Tests
                 .Build();
 
             // Calc - See CalcRerollWithModifier
-            var successfulSideCount = die.Sides + 1 - valueAndAboveTarget;
-            var expectedProbability = CalcProbabilityForRerollWithModifier(die.Sides, successfulSideCount, 1, modifier);
+            var successfulSideCount = die.TotalSides + 1 - valueAndAboveTarget;
+            var expectedProbability = CalcProbabilityForRerollWithModifier(die.TotalSides, successfulSideCount, 1, modifier);
             CheckProbability(roll, expectedProbability);
         }
 
@@ -222,9 +222,9 @@ namespace DieRoller.Tests
                 .Build();
 
             // Calc - See CalcRerollWithModifier
-            var successfulSideCount = die.Sides + 1 - valueAndAboveTarget;
-            var rerollSides = die.Sides - successfulSideCount;
-            var expectedProbability = CalcProbabilityForRerollWithModifier(die.Sides, successfulSideCount, rerollSides, modifier);
+            var successfulSideCount = die.TotalSides + 1 - valueAndAboveTarget;
+            var rerollSides = die.TotalSides - successfulSideCount;
+            var expectedProbability = CalcProbabilityForRerollWithModifier(die.TotalSides, successfulSideCount, rerollSides, modifier);
             CheckProbability(roll, expectedProbability);
         }
 
