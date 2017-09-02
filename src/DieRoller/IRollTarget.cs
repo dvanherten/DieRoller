@@ -5,6 +5,6 @@ namespace DieRoller
     public interface IRollTarget
     {
         IEnumerable<int> GetSuccessfulSides(int dieSides);
-        IEnumerable<int> GetModifiedSuccessfulSides(int dieSides);
+        IEnumerable<int> GetModifiedSuccessfulSides(int dieSides, IRollModifier modifier);
     }
 }

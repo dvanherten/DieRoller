@@ -9,7 +9,7 @@ namespace DieRoller
             
         }
 
-        public decimal CalculateProbability(Die die, IRollTarget target)
+        public decimal CalculateProbability(Die die, IRollTarget target, IRollModifier modifier)
         {
             return 0;
         }

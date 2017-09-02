@@ -86,6 +86,75 @@ namespace DieRoller.Tests
         }
 
         [Theory]
+        [InlineData(1, 1, 2)]
+        [InlineData(2, 1, 3)]
+        [InlineData(3, 1, 4)]
+        [InlineData(4, 1, 5)]
+        [InlineData(5, 1, 6)]
+        [InlineData(1, -1, 1)]
+        [InlineData(2, -1, 1)]
+        [InlineData(3, -1, 2)]
+        [InlineData(4, -1, 3)]
+        [InlineData(5, -1, 4)]
+        [InlineData(6, -1, 5)]
+        [InlineData(2, -2, 1)]
+        [InlineData(6, 2, 8)]
+        public void GivenD6_NoReroll_WithModifier(int numberToGenerate, int modifier, int expected)
+        {
+            var roll = RollBuilder.WithDie(Die.D6)
+                .WithNumbers(new ForcedNumberGenerator(numberToGenerate))
+                .Targeting(Target.ValueAndAbove(3))
+                .WithModifier(modifier)
+                .Build();
+
+            var result = roll.Simulate();
+
+            _output.WriteLine(result.ToString());
+            result.Final.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(3, 1, 5, 1, true, 6, true)]
+        [InlineData(5, 1, 5, -1, true, 4, false)]
+        [InlineData(3, 5, 4, -2, false, 3, true)]
+        [InlineData(3, 2, 5, -2, false, 1, false)]
+        public void GivenD6_RerollOnes_WithModifier(int targeting, int initialRoll, int reroll, int modifier, bool expectedReroll, int expectedFinal, bool expectedSuccess)
+        {
+            var roll = RollBuilder.WithDie(Die.D6)
+                .WithNumbers(new ForcedNumberGenerator(initialRoll, reroll))
+                .Targeting(Target.ValueAndAbove(targeting))
+                .WithReroll(Reroll.Ones)
+                .WithModifier(modifier)
+                .Build();
+
+            var result = roll.Simulate();
+
+            _output.WriteLine(result.ToString());
+            ValidateRollResult(result, initialRoll, reroll, expectedReroll, expectedFinal, expectedSuccess);
+        }
+
+        [Theory]
+        [InlineData(3, 1, 5, 1, true, 6, true)]
+        [InlineData(5, 1, 5, -1, true, 4, false)]
+        [InlineData(3, 5, 4, -2, false, 3, true)]
+        [InlineData(3, 2, 5, -2, true, 3, true)]
+        [InlineData(3, 3, 5, -1, false, 2, false)]
+        public void GivenD6_RerollFailures_WithModifier(int targeting, int initialRoll, int reroll, int modifier, bool expectedReroll, int expectedFinal, bool expectedSuccess)
+        {
+            var roll = RollBuilder.WithDie(Die.D6)
+                .WithNumbers(new ForcedNumberGenerator(initialRoll, reroll))
+                .Targeting(Target.ValueAndAbove(targeting))
+                .WithReroll(Reroll.Failures)
+                .WithModifier(modifier)
+                .Build();
+
+            var result = roll.Simulate();
+
+            _output.WriteLine(result.ToString());
+            ValidateRollResult(result, initialRoll, reroll, expectedReroll, expectedFinal, expectedSuccess);
+        }
+
+        [Theory]
         [InlineData(1, 1)]
         [InlineData(2, 2)]
         [InlineData(3, 3)]
@@ -154,13 +223,13 @@ namespace DieRoller.Tests
 
         private static void ValidateRollResult(RollResult result, int initialRoll, int reroll, bool expectedReroll, int expectedFinal, bool expectedSuccess)
         {
-            result.InitialRollResult.SideRolled.Should().Be(initialRoll);
+            result.InitialRollResult.SideRolled.Should().Be(initialRoll, $"{nameof(initialRoll)} incorrect");
             if (expectedReroll)
-                result.RerollResult.SideRolled.Should().Be(reroll);
+                result.RerollResult.SideRolled.Should().Be(reroll, $"{nameof(reroll)} incorrect");
             else
-                result.RerollResult.Should().BeNull();
-            result.Final.Should().Be(expectedFinal);
-            result.IsSuccessful.Should().Be(expectedSuccess);
+                result.RerollResult.Should().BeNull($"{nameof(reroll)} incorrect");
+            result.Final.Should().Be(expectedFinal, $"{nameof(expectedFinal)} incorrect");
+            result.IsSuccessful.Should().Be(expectedSuccess, $"{nameof(expectedSuccess)} incorrect");
         }
     }
 }

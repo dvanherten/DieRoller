@@ -1,34 +1,41 @@
-﻿namespace DieRoller
+﻿using System;
+
+namespace DieRoller
 {
     public class FlatRollModifier : IRollModifier
     {
-        public int Modifier { get; }
+        public int ModifierValue { get; }
 
         public FlatRollModifier(int modifier)
         {
-            Modifier = modifier;
+            ModifierValue = modifier;
         }
 
         public int GetModifiedTarget(int target)
         {
-            return target + Modifier * -1;
+            return target + ModifierValue * -1;
+        }
+
+        public int ModifyRoll(int sideRolled)
+        {
+            return Math.Max(1, sideRolled + ModifierValue);
         }
 
         public override bool Equals(object obj)
         {
             var second = obj as FlatRollModifier;
 
-            return Modifier == second?.Modifier;
+            return ModifierValue == second?.ModifierValue;
         }
 
         protected bool Equals(FlatRollModifier other)
         {
-            return Modifier == other.Modifier;
+            return ModifierValue == other.ModifierValue;
         }
 
         public override int GetHashCode()
         {
-            return Modifier;
+            return ModifierValue;
         }
     }
 }

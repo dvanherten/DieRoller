@@ -5,9 +5,9 @@ namespace DieRoller
 {
     public class RerollOnes : IRerollBehaviour
     {
-        public decimal CalculateProbability(Die die, IRollTarget target)
+        public decimal CalculateProbability(Die die, IRollTarget target, IRollModifier modifier)
         {
-            return die.CalculateProbability(1) * die.CalculateProbability(target.GetModifiedSuccessfulSides(die.TotalSides).Count());
+            return die.CalculateProbability(1) * die.CalculateProbability(target.GetModifiedSuccessfulSides(die.TotalSides, modifier).Count());
         }
 
         public IEnumerable<int> GetRerollSides(Die die, IRollTarget target)

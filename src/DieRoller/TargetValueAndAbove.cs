@@ -5,16 +5,12 @@ namespace DieRoller
 {
     public class TargetValueAndAbove : IRollTarget
     {
-        private readonly IRollModifier _modifier;
-
-        internal TargetValueAndAbove(int value, IRollModifier modifier)
+        internal TargetValueAndAbove(int value)
         {
-            _modifier = modifier;
             Target = value;
         }
 
         public int Target { get; }
-        public int ModifiedTarget => _modifier.GetModifiedTarget(Target);
 
         public IEnumerable<int> GetSuccessfulSides(int dieSides)
         {
@@ -23,10 +19,11 @@ namespace DieRoller
                     yield return i;
         }
 
-        public IEnumerable<int> GetModifiedSuccessfulSides(int dieSides)
+        public IEnumerable<int> GetModifiedSuccessfulSides(int dieSides, IRollModifier modifier)
         {
+            var modifiedTarget = modifier.GetModifiedTarget(Target);
             for (int i = 1; i <= dieSides; i++)
-                if (i >= ModifiedTarget)
+                if (i >= modifiedTarget)
                     yield return i;
         }
 

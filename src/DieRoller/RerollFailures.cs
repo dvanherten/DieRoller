@@ -7,10 +7,10 @@ namespace DieRoller
     {
         internal RerollFailures() { }
 
-        public decimal CalculateProbability(Die die, IRollTarget target)
+        public decimal CalculateProbability(Die die, IRollTarget target, IRollModifier modifier)
         {
             var failures = die.TotalSides - target.GetSuccessfulSides(die.TotalSides).Count();
-            return die.CalculateProbability(failures) * die.CalculateProbability(target.GetModifiedSuccessfulSides(die.TotalSides).Count());
+            return die.CalculateProbability(failures) * die.CalculateProbability(target.GetModifiedSuccessfulSides(die.TotalSides, modifier).Count());
         }
 
         public IEnumerable<int> GetRerollSides(Die die, IRollTarget target)

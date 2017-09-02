@@ -37,7 +37,7 @@
 
         public Roll Build()
         {
-            return new Roll(Die, new TargetValueAndAbove(Target, RollModifier), RerollBehaviour, NumberGenerator);
+            return new Roll(Die, new TargetValueAndAbove(Target), RerollBehaviour, RollModifier, NumberGenerator);
         }
 
         public static IRollBuilderWithDie WithDie(Die die)
