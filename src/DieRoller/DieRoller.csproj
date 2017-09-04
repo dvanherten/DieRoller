@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
+    <Version>0.1.0</Version>
+    <Authors>Dave van Herten</Authors>
+    <Company />
+    <PackageLicenseUrl>https://github.com/dvanherten/DieRoller/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/dvanherten/DieRoller/</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/dvanherten/DieRoller.gits</RepositoryUrl>
+    <PackageTags>die;dice;roll</PackageTags>
+    <Description>Calculate proabilities and perform simulations of die rolling scenarios that contain a target (3+). Includes behaviour for rerolling and applying modifiers to the end result.</Description>
   </PropertyGroup>
 
 </Project>
