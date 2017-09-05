@@ -20,4 +20,5 @@ pushd .\test\DieRoller.Tests\
 exec { & dotnet test -c Release }
 popd
 
-exec { & dotnet pack .\src\DieRoller -c Release -o .\artifacts  }
+# Will likely need to update the output path to remove the path navigation in 2.1
+exec { & dotnet pack .\src\DieRoller -c Release -o ..\..\artifacts  }
