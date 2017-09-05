@@ -1,17 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{A56002F0-E7EB-40A8-A542-B26A1159962D}"
 	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		build.ps1 = build.ps1
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DieRoller", "src\DieRoller\DieRoller.csproj", "{4D5A4EB6-18C2-45A0-8E2C-7132990A8701}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DieRoller", "src\DieRoller\DieRoller.csproj", "{4D5A4EB6-18C2-45A0-8E2C-7132990A8701}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DieRoller.Tests", "test\DieRoller.Tests\DieRoller.Tests.csproj", "{9E3321ED-3F8D-4CD4-867A-73A39579D5EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DieRoller.Tests", "test\DieRoller.Tests\DieRoller.Tests.csproj", "{9E3321ED-3F8D-4CD4-867A-73A39579D5EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +32,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {416B3FA0-CD0A-4D65-BCBF-815FFACB0159}
 	EndGlobalSection
 EndGlobal
