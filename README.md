@@ -1,4 +1,7 @@
 # DieRoller
+
+[![Build status](https://ci.appveyor.com/api/projects/status/8btf46j8h0lmjc07/branch/master?svg=true)](https://ci.appveyor.com/project/dvanherten/dieroller/branch/master)
+
 A simple library for programmatically calculating probabilities and simulating scenarios 
 of the rolling of a single die.
 
