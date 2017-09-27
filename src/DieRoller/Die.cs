@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ardalis.GuardClauses;
 
 namespace DieRoller
 {
@@ -29,8 +30,7 @@ namespace DieRoller
         /// <returns>Probability that the roll was successful.</returns>
         internal decimal CalculateProbability(int successfulSideCount)
         {
-            if (successfulSideCount < 0) throw new ArgumentOutOfRangeException(nameof(successfulSideCount), "cannot be less than zero.");
-            if (successfulSideCount > TotalSides) throw new ArgumentOutOfRangeException(nameof(successfulSideCount), "cannot exceed the sides of the die.");
+            Guard.Against.OutOfRange(successfulSideCount, nameof(successfulSideCount), 0, TotalSides);
 
             return (decimal)successfulSideCount / TotalSides;
         }

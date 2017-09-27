@@ -1,4 +1,5 @@
 ﻿using System;
+using Ardalis.GuardClauses;
 using FluentAssertions;
 using Xunit;
 
@@ -16,8 +17,7 @@ namespace DieRoller.Tests
 
         public ForcedNumberGenerator(params int[] numbers)
         {
-            if (numbers.Length == 0)
-                throw new ArgumentException("Value cannot be an empty collection.", nameof(numbers));
+            Guard.Against.EmptyCollection(numbers, nameof(numbers));
             Numbers = numbers;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Ardalis.GuardClauses;
 
 namespace DieRoller
 {
@@ -13,11 +14,17 @@ namespace DieRoller
 
         internal Roll(Die die, IRollTarget target, IRerollBehaviour rerollOptions, IRollModifier modifier, INumberGenerator numberGenerator)
         {
-            _die = die ?? throw new ArgumentNullException(nameof(die));
-            _target = target ?? throw new ArgumentNullException(nameof(target));
-            _rerollOptions = rerollOptions ?? throw new ArgumentNullException(nameof(rerollOptions));
-            _modifier = modifier ?? throw new ArgumentNullException(nameof(modifier));
-            _numberGenerator = numberGenerator ?? throw new ArgumentNullException(nameof(numberGenerator));
+            Guard.Against.Null(die, nameof(die));
+            Guard.Against.Null(rerollOptions, nameof(rerollOptions));
+            Guard.Against.Null(rerollOptions, nameof(rerollOptions));
+            Guard.Against.Null(modifier, nameof(modifier));
+            Guard.Against.Null(numberGenerator, nameof(numberGenerator));
+
+            _die = die;
+            _target = target;
+            _rerollOptions = rerollOptions;
+            _modifier = modifier;
+            _numberGenerator = numberGenerator;
         }
 
         public decimal CalculateProbability()

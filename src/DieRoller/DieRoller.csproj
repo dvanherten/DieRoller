@@ -14,4 +14,8 @@
     <Description>Calculate proabilities and perform simulations of die rolling scenarios that contain a target (3+). Includes behaviour for rerolling and applying modifiers to the end result.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Ardalis.GuardClauses" Version="1.1.0" />
+  </ItemGroup>
+
 </Project>

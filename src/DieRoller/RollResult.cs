@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Ardalis.GuardClauses;
 
 namespace DieRoller
 {
@@ -14,7 +15,10 @@ namespace DieRoller
 
         public RollResult(IRollTarget target, SingleRollResult initialRollResult, SingleRollResult rerollResult, int modifierValue, int final)
         {
-            InitialRollResult = initialRollResult ?? throw new ArgumentNullException(nameof(initialRollResult));
+            Guard.Against.Null(target, nameof(target));
+            Guard.Against.Null(initialRollResult, nameof(initialRollResult));
+
+            InitialRollResult = initialRollResult;
             Target = target;
             RerollResult = rerollResult;
             ModifierValue = modifierValue;
